@@ -38,7 +38,8 @@ export const createMessageInChat = async (values , chatId) => {
     });
 
        // Trigger Your AI here
-   const res = await fetch("http://localhost:3000/api/chat" , {
+   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3002";
+   const res = await fetch(`${baseUrl}/api/chat` , {
       method: "POST",
       body: JSON.stringify({
         chatId: chatId,

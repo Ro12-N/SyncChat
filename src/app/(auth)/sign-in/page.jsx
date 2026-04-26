@@ -23,15 +23,30 @@ const LoginPage = () => {
         className={
           "max-w-sm mt-5 w-full px-7 py-7 flex flex-row justify-center items-center cursor-pointer"
         }
-        onClick={() =>
-          signIn.social({
-            provider: "github",
-            callbackURL: "/",
-          })
-        }
+        onClick={async () => {
+          const guestEmail = `guest_${Math.random().toString(36).substring(7)}@example.com`;
+          const password = "guestPassword123!";
+          const { signUp, signIn } = require("@/lib/auth-client");
+          try {
+            await signUp.email({
+              email: guestEmail,
+              password: password,
+              name: "Guest User",
+              callbackURL: "/"
+            });
+            await signIn.email({
+              email: guestEmail,
+              password: password,
+              callbackURL: "/"
+            });
+            window.location.href = "/";
+          } catch (e) {
+            console.error(e);
+            alert("Failed to login");
+          }
+        }}
       >
-        <Image src={"/github.svg"} alt={"github"} width={24} height={24} />
-        <span className="font-bold ml-2">Sign in with Github</span>
+        <span className="font-bold ml-2">Quick Guest Login</span>
       </Button>
     </section>
   );
